@@ -1,0 +1,165 @@
+/* SainaFlow Design System */
+
+:root {
+  --sf-primary: #4F46E5;
+  --sf-primary-hover: #4338ca;
+  --sf-secondary: #7C3AED;
+  --sf-secondary-hover: #6d28d9;
+  --sf-accent: #EC4899;
+  --sf-accent-hover: #db2777;
+  --sf-success: #10b981;
+  --sf-warning: #f59e0b;
+  --sf-error: #ef4444;
+  --sf-info: #3b82f6;
+}
+
+/* Brand Gradients */
+.sf-gradient-primary {
+  background: linear-gradient(135deg, var(--sf-primary) 0%, var(--sf-secondary) 100%);
+}
+
+.sf-gradient-accent {
+  background: linear-gradient(135deg, var(--sf-secondary) 0%, var(--sf-accent) 100%);
+}
+
+.sf-gradient-mesh {
+  background:
+    radial-gradient(at 40% 20%, hsla(240, 84%, 67%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(270, 76%, 60%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(330, 81%, 60%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 80% 50%, hsla(240, 84%, 67%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(270, 76%, 60%, 0.1) 0px, transparent 50%);
+}
+
+/* Card Styles */
+.sf-card {
+  @apply rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03];
+}
+
+.sf-card-hover {
+  @apply transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700;
+}
+
+/* Button Styles */
+.sf-btn-primary {
+  @apply bg-brand-500 hover:bg-brand-600 text-white font-medium transition-colors duration-200;
+}
+
+.sf-btn-secondary {
+  @apply bg-violet-500 hover:bg-violet-600 text-white font-medium transition-colors duration-200;
+}
+
+.sf-btn-accent {
+  @apply bg-rose-500 hover:bg-rose-600 text-white font-medium transition-colors duration-200;
+}
+
+/* Input Styles */
+.sf-input {
+  @apply h-10 w-full rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm shadow-theme-xs transition-colors duration-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-brand-400;
+}
+
+/* Badge Styles */
+.sf-badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+}
+
+.sf-badge-primary {
+  @apply sf-badge bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400;
+}
+
+.sf-badge-secondary {
+  @apply sf-badge bg-violet-50 text-violet-700 dark:bg-violet-500/10 dark:text-violet-400;
+}
+
+.sf-badge-accent {
+  @apply sf-badge bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400;
+}
+
+.sf-badge-success {
+  @apply sf-badge bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400;
+}
+
+.sf-badge-warning {
+  @apply sf-badge bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400;
+}
+
+.sf-badge-error {
+  @apply sf-badge bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400;
+}
+
+/* Kanban Styles */
+.sf-kanban-column {
+  @apply flex flex-col gap-2 p-3 rounded-xl bg-gray-50 dark:bg-gray-900/50 min-h-[200px];
+}
+
+.sf-kanban-card {
+  @apply p-3 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 cursor-grab active:cursor-grabbing transition-shadow duration-200 hover:shadow-md;
+}
+
+/* Timer Styles */
+.sf-timer-running {
+  @apply text-rose-500 font-mono font-semibold;
+}
+
+.sf-timer-paused {
+  @apply text-amber-500 font-mono font-semibold;
+}
+
+.sf-timer-stopped {
+  @apply text-gray-500 font-mono font-semibold;
+}
+
+/* Animation Utilities */
+.sf-animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.sf-animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.sf-animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Dark Mode Overrides */
+.dark .sf-card {
+  @apply border-gray-800 bg-white/[0.03];
+}
+
+.dark .sf-input {
+  @apply border-gray-700 bg-gray-800;
+}

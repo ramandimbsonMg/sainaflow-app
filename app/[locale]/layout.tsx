@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { Inter, Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 
 import { ReactNode } from "react";
 
@@ -11,12 +11,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/app/providers/ThemeProvider";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
-});
+const inter = Inter({ subsets: ["latin"] });
 
 type Props = {
   children: ReactNode;
@@ -65,9 +60,7 @@ export default async function RootLayout(props: Props) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body
-        className={`${inter.variable} ${poppins.variable} font-sans min-h-screen`}
-      >
+      <body className={inter.className + " min-h-screen"}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}

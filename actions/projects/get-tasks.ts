@@ -1,24 +1,54 @@
 import { prismadb } from "@/lib/prisma";
-import {
-  requireAuthenticated,
-  boardReadScopeWhere,
-  AuthenticationError,
-} from "@/lib/authz";
+import { getSession } from "@/lib/auth-server";
 
 export const getTasks = async () => {
-  let user;
-  try {
-    user = await requireAuthenticated();
-  } catch (e) {
-    if (e instanceof AuthenticationError) return [];
-    throw e;
-  }
+  const session = await getSession();
+  const userId = session?.user?.id;
+
+  const boards = await prismadb.boards.findMany({
+    where: {
+      OR: [
+        {
+          user: userId,
+        },
+        {
+          visibility: "public",
+        },
+      ],
+    },
+    include: {
+      assigned_user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  if (!boards) return null;
+  if (!userId) return null;
+
+  //Filtering tasks by section and board
+  const sections = await prismadb.sections.findMany({
+    where: {
+      OR: boards.map((board: any) => {
+        return {
+          board: board.id,
+        };
+      }),
+    },
+  });
 
   const data = await prismadb.tasks.findMany({
     where: {
-      assigned_section: {
-        board_relation: boardReadScopeWhere(user),
-      },
+      OR: sections.map((section: any) => {
+        return {
+          section: section.id,
+        };
+      }),
     },
     include: {
       assigned_user: {

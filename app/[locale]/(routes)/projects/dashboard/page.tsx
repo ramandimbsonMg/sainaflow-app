@@ -17,13 +17,7 @@ const ProjectDashboard = async () => {
   const sections: Sections[] = await getSections();
 
   if (!dashboardData) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500 dark:text-gray-400">
-          Dashboard data not found
-        </p>
-      </div>
-    );
+    return <div>DashBoard data not found</div>;
   }
 
   return (

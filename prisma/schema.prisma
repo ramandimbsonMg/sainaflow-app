@@ -38,9 +38,6 @@ model crm_Accounts {
   shipping_state       String?
   shipping_street      String?
   status               String?   @default("Inactive")
-  /// Spec §3.8 case-study pipeline: rep flags the candidate, CSO approves.
-  case_study_candidate Boolean   @default(false)
-  case_study_approved  Boolean   @default(false)
   type                 String?   @default("Customer")
   vat                  String?
   website              String?
@@ -60,7 +57,6 @@ model crm_Accounts {
   embedding          crm_Embeddings_Accounts?
   emails             EmailsToAccounts[]
   accountProducts    crm_AccountProducts[]
-  invoices           Invoices[]
 
   @@index([assigned_to])
   @@index([industry])
@@ -204,16 +200,8 @@ model crm_Opportunities {
   budget           Decimal                 @default(0) @db.Decimal(18, 2)
   campaign         String?                 @db.Uuid
   close_date       DateTime?
-  delivery_deadline DateTime?
-  /// Set whenever sales_stage changes; anchors cadence/care timers.
-  stage_entered_at  DateTime?
-  /// SOW/quote approval (spec §3.5: CSO approves before the quote is sent).
-  approval_status       crm_Approval_Status @default(NONE)
-  approval_requested_at DateTime?
-  approval_note         String?
-  approved_by           String?             @db.Uuid
-  approved_at           DateTime?
   contact          String?                 @db.Uuid
+  created_by       String?                 @db.Uuid
   createdBy        String?                 @db.Uuid
   created_on       DateTime?               @default(now())
   createdAt        DateTime                @default(now())
@@ -234,7 +222,7 @@ model crm_Opportunities {
   assigned_type        crm_Opportunities_Type?         @relation(fields: [type], references: [id])
   assigned_sales_stage crm_Opportunities_Sales_Stages? @relation("assinged_sales_stage", fields: [sales_stage], references: [id])
   assigned_to_user     Users?                          @relation("assigned_to_user_relation", fields: [assigned_to], references: [id])
-  created_by_user      Users?                          @relation("created_by_user_relation", fields: [createdBy], references: [id])
+  created_by_user      Users?                          @relation("created_by_user_relation", fields: [created_by], references: [id])
   assigned_account     crm_Accounts?                   @relation(fields: [account], references: [id])
   assigned_campaings   crm_campaigns?                  @relation(fields: [campaign], references: [id])
   assigned_currency    Currency?                       @relation(fields: [currency], references: [code])
@@ -242,7 +230,6 @@ model crm_Opportunities {
   contacts             ContactsToOpportunities[]
   embedding            crm_Embeddings_Opportunities?
   lineItems            crm_OpportunityLineItems[]
-  tasks                crm_Accounts_Tasks[]
   deletedAt            DateTime?
   deletedBy            String?   @db.Uuid
 
@@ -250,7 +237,7 @@ model crm_Opportunities {
   @@index([assigned_to])
   @@index([campaign])
   @@index([contact])
-  @@index([createdBy])
+  @@index([created_by])
   @@index([sales_stage])
   @@index([type])
   @@index([status])
@@ -258,13 +245,6 @@ model crm_Opportunities {
   @@index([close_date])
   @@index([status, sales_stage])
   @@index([deletedAt])
-}
-
-enum crm_Approval_Status {
-  NONE
-  PENDING
-  APPROVED
-  REJECTED
 }
 
 enum crm_Opportunity_Status {
@@ -412,39 +392,16 @@ model crm_campaign_sends {
 
 model crm_Opportunities_Sales_Stages {
   id                                 String              @id @default(uuid()) @db.Uuid
-  v                                  Int                 @default(0) @map("__v")
+  v                                  Int                 @map("__v")
   name                               String
   probability                        Int?
   order                              Int?
-  /// Automation trigger kind — connectable per stage in admin CRM settings.
-  /// One of: pre_sale | qualified | purchase_order | delivery | care. Null = no automation.
-  stage_kind                         String?
   assigned_opportunities_sales_stage crm_Opportunities[] @relation("assinged_sales_stage")
-}
-
-/// Instance-grade funnel timing settings (singleton row). Defaults are the
-/// AQUNAMA spec values; edited at Admin -> Funnel settings.
-model crm_FunnelSettings {
-  id                           String    @id @default(uuid()) @db.Uuid
-  kill_after_days              Int       @default(45)
-  recycle_after_days           Int       @default(90)
-  cadence_touch1_business_days Int       @default(3)
-  cadence_touch2_offset_days   Int       @default(7)
-  cadence_touch3_offset_days   Int       @default(10)
-  cadence_touch4_offset_days   Int       @default(15)
-  cadence_touch5_offset_days   Int       @default(45)
-  care_checkin_days            Int       @default(30)
-  care_referral_days           Int       @default(90)
-  care_quarter_interval_days   Int       @default(90)
-  care_quarter_count           Int       @default(8)
-  renewal_window_days          Int       @default(30)
-  updatedAt                    DateTime? @updatedAt
-  updatedBy                    String?   @db.Uuid
 }
 
 model crm_Opportunities_Type {
   id                     String              @id @default(uuid()) @db.Uuid
-  v                      Int                 @default(0) @map("__v")
+  v                      Int                 @map("__v")
   name                   String
   order                  Int?
   assigned_opportunities crm_Opportunities[]
@@ -492,6 +449,7 @@ model crm_Contacts {
   account          String?   @db.Uuid
   assigned_to      String?   @db.Uuid
   birthday         String?
+  created_by       String?   @db.Uuid
   createdBy        String?   @db.Uuid
   created_on       DateTime? @default(now())
   cratedAt         DateTime? @default(now())
@@ -522,7 +480,7 @@ model crm_Contacts {
   notes            String[]
 
   assigned_to_user  Users?                    @relation("assigned_contacts", fields: [assigned_to], references: [id])
-  crate_by_user     Users?                    @relation("created_contacts", fields: [createdBy], references: [id])
+  crate_by_user     Users?                    @relation("created_contacts", fields: [created_by], references: [id])
   accountsIDs       String?                   @db.Uuid
   assigned_accounts crm_Accounts?             @relation(fields: [accountsIDs], references: [id])
   opportunities     ContactsToOpportunities[]
@@ -536,6 +494,7 @@ model crm_Contacts {
   deletedBy             String?   @db.Uuid
 
   @@index([assigned_to])
+  @@index([created_by])
   @@index([accountsIDs])
   @@index([createdBy])
   @@index([updatedBy])
@@ -613,7 +572,6 @@ model Currency {
   contracts     crm_Contracts[]
   products        crm_Products[]
   accountProducts crm_AccountProducts[]
-  invoices        Invoices[]          @relation("InvoiceCurrency")
 }
 
 model ExchangeRate {
@@ -673,7 +631,6 @@ model crm_Activities {
   created_by_user Users?              @relation("activity_created_by", fields: [createdBy], references: [id])
   updated_by_user Users?              @relation("activity_updated_by", fields: [updatedBy], references: [id])
   links       crm_ActivityLinks[]
-  calendar_events crm_CalendarEvents[]
 
   @@index([date])
   @@index([type])
@@ -834,7 +791,6 @@ model Sections {
   board    String  @db.Uuid
   title    String
   position BigInt?
-  wipLimit Int?
   tasks    Tasks[]
 
   board_relation Boards? @relation(fields: [board], references: [id])
@@ -844,38 +800,34 @@ model Sections {
 
 model crm_Industry_Type {
   id       String         @id @default(uuid()) @db.Uuid
-  v        Int            @default(0) @map("__v")
+  v        Int            @map("__v")
   name     String
   accounts crm_Accounts[]
 }
 
 model Tasks {
-  id              String      @id @default(uuid()) @db.Uuid
-  v               Int         @map("__v")
-  content         String?
-  description     String?
-  createdAt       DateTime?   @default(now())
-  createdBy       String?     @db.Uuid
-  updatedAt       DateTime?   @updatedAt
-  updatedBy       String?     @db.Uuid
-  dueDateAt       DateTime?   @default(now())
-  lastEditedAt    DateTime?   @default(now()) @updatedAt
-  position        BigInt
-  priority        String
-  section         String?     @db.Uuid
-  tags            Json?       @db.JsonB
-  title           String
-  likes           BigInt?     @default(0)
-  user            String?     @db.Uuid
-  taskStatus      taskStatus? @default(ACTIVE)
-  estimatedHours  Decimal?    @db.Decimal(8, 2)
-  actualHours     Decimal?    @db.Decimal(8, 2)
+  id           String      @id @default(uuid()) @db.Uuid
+  v            Int         @map("__v")
+  content      String?
+  createdAt    DateTime?   @default(now())
+  createdBy    String?     @db.Uuid
+  updatedAt    DateTime?   @updatedAt
+  updatedBy    String?     @db.Uuid
+  dueDateAt    DateTime?   @default(now())
+  lastEditedAt DateTime?   @default(now()) @updatedAt
+  position     BigInt
+  priority     String
+  section      String?     @db.Uuid
+  tags         Json?       @db.JsonB
+  title        String
+  likes        BigInt?     @default(0)
+  user         String?     @db.Uuid
+  taskStatus   taskStatus? @default(ACTIVE)
 
   comments         tasksComments[]
   assigned_user    Users?             @relation(fields: [user], references: [id])
   assigned_section Sections?          @relation(fields: [section], references: [id])
   documents        DocumentsToTasks[]
-  timeEntries      TimeEntry[]
 
   @@index([user])
   @@index([section])
@@ -886,27 +838,6 @@ model Tasks {
   @@index([dueDateAt])
   @@index([createdAt])
   @@index([user, taskStatus])
-}
-
-model TimeEntry {
-  id          String   @id @default(uuid()) @db.Uuid
-  taskId      String   @db.Uuid
-  userId      String   @db.Uuid
-  duration    Int      // duration in seconds
-  isBillable  Boolean  @default(true)
-  startTime   DateTime @default(now())
-  endTime     DateTime?
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  task Tasks @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user Users @relation(fields: [userId], references: [id])
-
-  @@index([taskId])
-  @@index([userId])
-  @@index([startTime])
-  @@index([createdAt])
 }
 
 model crm_Accounts_Tasks {
@@ -929,11 +860,9 @@ model crm_Accounts_Tasks {
   assigned_user Users?          @relation(fields: [user], references: [id])
 
   //CRM assigments
-  account        String?                       @db.Uuid
-  opportunity_id String?                       @db.Uuid
-  crm_accounts   crm_Accounts?                 @relation(fields: [account], references: [id])
-  opportunity    crm_Opportunities?            @relation(fields: [opportunity_id], references: [id])
-  documents      DocumentsToCrmAccountsTasks[]
+  account      String?                       @db.Uuid
+  crm_accounts crm_Accounts?                 @relation(fields: [account], references: [id])
+  documents    DocumentsToCrmAccountsTasks[]
 
   @@index([user])
   @@index([account])
@@ -944,7 +873,6 @@ model crm_Accounts_Tasks {
   @@index([dueDateAt])
   @@index([createdAt])
   @@index([account, taskStatus])
-  @@index([opportunity_id])
 }
 
 model tasksComments {
@@ -952,7 +880,7 @@ model tasksComments {
   v                         Int      @map("__v")
   comment                   String
   createdAt                 DateTime @default(now())
-  task                      String?  @db.Uuid
+  task                      String   @db.Uuid
   user                      String   @db.Uuid
   assigned_crm_account_task String?  @db.Uuid
 
@@ -986,12 +914,6 @@ enum ActiveStatus {
   PENDING
 }
 
-enum AppRole {
-  user
-  manager
-  admin
-}
-
 model Users {
   id               String       @id @default(uuid()) @db.Uuid
   v                Int          @default(0) @map("__v")
@@ -1000,7 +922,9 @@ model Users {
   email            String       @unique
   emailVerified    Boolean      @default(false)
   image            String?
-  role             AppRole      @default(user)
+  is_account_admin Boolean      @default(false)
+  role             String       @default("member")
+  is_admin         Boolean      @default(false)
   created_on       DateTime     @default(now())
   updated_at       DateTime?    @updatedAt
   lastLoginAt      DateTime?
@@ -1012,8 +936,6 @@ model Users {
   banned           Boolean      @default(false)
   banReason        String?
   banExpires       DateTime?
-  hourlyRate       Decimal?     @db.Decimal(10, 2)
-  department       String?
 
   tasksComment         tasksComments[]
   created_by_documents Documents[]           @relation("created_by_user")
@@ -1035,7 +957,6 @@ model Users {
   created_target_lists crm_TargetLists[]     @relation("created_target_lists")
   apiTokens            ApiToken[]
   emailAccounts        EmailAccount[]
-  calendarConnections  CalendarConnection[]
   emails               Email[]
   enrichments_triggered          crm_Contact_Enrichment[]  @relation("enrichment_triggered_by")
   target_enrichments_triggered   crm_Target_Enrichment[]   @relation("target_enrichment_triggered_by")
@@ -1049,16 +970,12 @@ model Users {
   report_schedules             crm_Report_Schedule[] @relation("report_schedules")
   sessions                     Session[]
   authAccounts                 Account[]
-  createdInvoices              Invoices[]           @relation("InvoiceCreatedBy")
-  invoicePayments              Invoice_Payments[]    @relation("InvoicePaymentCreatedBy")
-  invoiceAttachments           Invoice_Attachments[] @relation("InvoiceAttachmentUploadedBy")
-  invoiceActivity              Invoice_Activity[]    @relation("InvoiceActivityActor")
-  timeEntries                  TimeEntry[]
 
   @@index([email])
   @@index([userStatus])
   @@index([userLanguage])
-  @@index([role])
+  @@index([is_admin])
+  @@index([is_account_admin])
   @@index([created_on])
   @@index([lastLoginAt])
 }
@@ -1302,8 +1219,6 @@ model crm_Targets {
   social_instagram String?
   social_facebook  String?
   status           Boolean   @default(true)
-  do_not_email     Boolean   @default(false)
-  do_not_email_at  DateTime?
   tags             String[]
   notes            String[]
   created_by       String?   @db.Uuid
@@ -1341,7 +1256,6 @@ model crm_Targets {
   @@index([status])
   @@index([created_on])
   @@index([converted_account_id])
-  @@index([do_not_email])
   @@index([converted_contact_id])
   @@index([deletedAt])
 }
@@ -1558,62 +1472,6 @@ model EmailEmbedding {
   @@map("EmailEmbedding")
 }
 
-// ============================================
-// CALENDAR SYNC (AQUNAMA Phase 4)
-// ============================================
-
-enum CalendarProvider {
-  google
-}
-
-model CalendarConnection {
-  id                    String           @id @default(uuid()) @db.Uuid
-  userId                String           @db.Uuid
-  provider              CalendarProvider
-  accountEmail          String
-  accessTokenEncrypted  String?
-  refreshTokenEncrypted String
-  tokenExpiresAt        DateTime?
-  syncToken             String?
-  scopeLevel            String           @default("readonly")
-  isActive              Boolean          @default(true)
-  lastSyncedAt          DateTime?
-  lastSyncError         String?
-  createdAt             DateTime         @default(now())
-  updatedAt             DateTime         @updatedAt
-
-  user           Users               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  calendarEvents crm_CalendarEvents[]
-
-  @@unique([userId, provider, accountEmail])
-  @@index([userId])
-  @@index([isActive])
-}
-
-model crm_CalendarEvents {
-  id             String    @id @default(uuid()) @db.Uuid
-  source         String
-  externalId     String
-  iCalUID        String?
-  connectionId   String?   @db.Uuid
-  activityId     String    @db.Uuid
-  startAt        DateTime
-  endAt          DateTime?
-  attendeeEmails Json      @default("[]")
-  status         String    @default("scheduled")
-  rawPayload     Json?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-
-  connection CalendarConnection? @relation(fields: [connectionId], references: [id], onDelete: SetNull)
-  activity   crm_Activities      @relation(fields: [activityId], references: [id], onDelete: Cascade)
-
-  @@unique([source, externalId])
-  @@index([iCalUID])
-  @@index([activityId])
-  @@index([startAt])
-}
-
 model EmailsToContacts {
   emailId   String @db.Uuid
   contactId String @db.Uuid
@@ -1735,7 +1593,6 @@ model crm_Products {
   accountProducts crm_AccountProducts[]
   opportunityLineItems crm_OpportunityLineItems[]
   contractLineItems    crm_ContractLineItems[]
-  invoiceLineItems     Invoice_LineItems[]
 
   @@index([status])
   @@index([type])
@@ -1832,214 +1689,4 @@ model crm_ContractLineItems {
 
   @@index([contractId])
   @@index([productId])
-}
-
-enum Invoice_Status {
-  DRAFT
-  ISSUED
-  SENT
-  PARTIALLY_PAID
-  PAID
-  OVERDUE
-  CANCELLED
-  DISPUTED
-  REFUNDED
-  WRITTEN_OFF
-}
-
-enum Invoice_Type {
-  INVOICE
-  CREDIT_NOTE
-  PROFORMA
-}
-
-model Invoices {
-  id                    String           @id @default(uuid()) @db.Uuid
-  createdAt             DateTime         @default(now())
-  updatedAt             DateTime         @updatedAt
-  createdBy             String           @db.Uuid
-  createdByUser         Users            @relation("InvoiceCreatedBy", fields: [createdBy], references: [id])
-
-  type                  Invoice_Type     @default(INVOICE)
-  status                Invoice_Status   @default(DRAFT)
-
-  number                String?
-  numberOverridden      Boolean          @default(false)
-  seriesId              String?          @db.Uuid
-  series                Invoice_Series?  @relation(fields: [seriesId], references: [id])
-
-  accountId             String           @db.Uuid
-  account               crm_Accounts     @relation(fields: [accountId], references: [id])
-  billingSnapshot       Json?
-
-  issueDate             DateTime?
-  taxableSupplyDate     DateTime?
-  dueDate               DateTime?
-
-  currency              String           @db.VarChar(3)
-  currencyRef           Currency         @relation("InvoiceCurrency", fields: [currency], references: [code], onDelete: Restrict)
-  baseCurrency          String?          @db.VarChar(3)
-  fxRateToBase          Decimal?         @db.Decimal(18, 8)
-
-  subtotal              Decimal          @default(0) @db.Decimal(14, 2)
-  discountTotal         Decimal          @default(0) @db.Decimal(14, 2)
-  vatTotal              Decimal          @default(0) @db.Decimal(14, 2)
-  grandTotal            Decimal          @default(0) @db.Decimal(14, 2)
-  paidTotal             Decimal          @default(0) @db.Decimal(14, 2)
-  balanceDue            Decimal          @default(0) @db.Decimal(14, 2)
-
-  bankName              String?
-  bankAccount           String?
-  iban                  String?
-  swift                 String?
-  variableSymbol        String?
-
-  publicNotes           String?
-  internalNotes         String?
-
-  originalInvoiceId     String?          @db.Uuid
-  originalInvoice       Invoices?        @relation("CreditNoteOf", fields: [originalInvoiceId], references: [id])
-  creditNotes           Invoices[]       @relation("CreditNoteOf")
-
-  pdfStorageKey         String?
-  pdfGeneratedAt        DateTime?
-
-  searchVector          Unsupported("tsvector")?  @map("search_vector")
-
-  lineItems             Invoice_LineItems[]
-  payments              Invoice_Payments[]
-  activity              Invoice_Activity[]
-  attachments           Invoice_Attachments[]
-
-  @@unique([seriesId, number])
-  @@index([accountId])
-  @@index([status])
-  @@index([issueDate])
-  @@index([dueDate])
-  @@index([createdBy])
-  @@index([originalInvoiceId])
-}
-
-model Invoice_LineItems {
-  id              String     @id @default(uuid()) @db.Uuid
-  invoiceId       String     @db.Uuid
-  invoice         Invoices   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  position        Int
-  productId       String?    @db.Uuid
-  product         crm_Products? @relation(fields: [productId], references: [id])
-  description     String
-  quantity        Decimal    @db.Decimal(14, 4)
-  unitPrice       Decimal    @db.Decimal(14, 4)
-  discountPercent Decimal    @default(0) @db.Decimal(5, 2)
-  taxRateId       String?    @db.Uuid
-  taxRate         Invoice_TaxRates? @relation(fields: [taxRateId], references: [id])
-  taxRateSnapshot Decimal?   @db.Decimal(5, 2)
-  lineSubtotal    Decimal    @db.Decimal(14, 2)
-  lineVat         Decimal    @db.Decimal(14, 2)
-  lineTotal       Decimal    @db.Decimal(14, 2)
-
-  @@index([invoiceId])
-  @@index([productId])
-  @@index([taxRateId])
-}
-
-model Invoice_Payments {
-  id          String   @id @default(uuid()) @db.Uuid
-  invoiceId   String   @db.Uuid
-  invoice     Invoices @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  paidAt      DateTime
-  amount      Decimal  @db.Decimal(14, 2)
-  method      String?
-  reference   String?
-  note        String?
-  createdBy   String   @db.Uuid
-  createdByUser Users  @relation("InvoicePaymentCreatedBy", fields: [createdBy], references: [id], onDelete: Restrict)
-  createdAt   DateTime @default(now())
-
-  @@index([invoiceId])
-}
-
-model Invoice_Attachments {
-  id              String   @id @default(uuid()) @db.Uuid
-  invoiceId       String   @db.Uuid
-  invoice         Invoices @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  storageKey      String
-  filename        String
-  mimeType        String
-  size            Int
-  uploadedBy      String   @db.Uuid
-  uploadedByUser  Users    @relation("InvoiceAttachmentUploadedBy", fields: [uploadedBy], references: [id], onDelete: Restrict)
-  uploadedAt      DateTime @default(now())
-  isPrimaryPdf    Boolean  @default(false)
-
-  @@index([invoiceId])
-}
-
-model Invoice_Activity {
-  id          String   @id @default(uuid()) @db.Uuid
-  invoiceId   String   @db.Uuid
-  invoice     Invoices @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  actorId     String   @db.Uuid
-  actor       Users    @relation("InvoiceActivityActor", fields: [actorId], references: [id], onDelete: Restrict)
-  action      String
-  meta        Json?
-  createdAt   DateTime @default(now())
-
-  @@index([invoiceId])
-}
-
-model Invoice_TaxRates {
-  id          String   @id @default(uuid()) @db.Uuid
-  name        String
-  rate        Decimal  @db.Decimal(5, 2)
-  isDefault   Boolean  @default(false)
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  lineItems   Invoice_LineItems[]
-  defaultForSettings Invoice_Settings[]
-}
-
-model Invoice_Series {
-  id              String   @id @default(uuid()) @db.Uuid
-  name            String
-  prefixTemplate  String
-  resetPolicy     String   @default("YEARLY")
-  currentYear     Int?
-  counter         Int      @default(0)
-  isDefault       Boolean  @default(false)
-  active          Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  invoices        Invoices[]
-  defaultForSettings Invoice_Settings[]
-}
-
-model Invoice_Settings {
-  id                  String   @id @default(uuid()) @db.Uuid
-  baseCurrency        String   @db.VarChar(3)
-  defaultSeriesId     String?  @db.Uuid
-  defaultSeries       Invoice_Series? @relation(fields: [defaultSeriesId], references: [id], onDelete: SetNull)
-  defaultTaxRateId    String?  @db.Uuid
-  defaultTaxRate      Invoice_TaxRates? @relation(fields: [defaultTaxRateId], references: [id], onDelete: SetNull)
-  defaultDueDays      Int      @default(14)
-  bankName            String?
-  bankAccount         String?
-  iban                String?
-  swift               String?
-  footerText          String?
-  companyName         String?
-  companyAddress      String?
-  companyCity         String?
-  companyZip          String?
-  companyCountry      String?
-  companyVatId        String?
-  companyTaxId        String?
-  companyRegNo        String?
-  companyEmail        String?
-  companyPhone        String?
-  companyWebsite      String?
-  updatedAt           DateTime @updatedAt
 }

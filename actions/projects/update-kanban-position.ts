@@ -2,12 +2,6 @@
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import {
-  requireAuthenticated,
-  assertCanWriteTask,
-  AuthenticationError,
-  AuthorizationError,
-} from "@/lib/authz";
 
 export const updateKanbanPosition = async (data: {
   resourceList: { id: string }[];
@@ -15,14 +9,6 @@ export const updateKanbanPosition = async (data: {
   resourceSectionId: string;
   destinationSectionId: string;
 }) => {
-  let authzUser;
-  try {
-    authzUser = await requireAuthenticated();
-  } catch (e) {
-    if (e instanceof AuthenticationError) return { error: "Unauthorized" };
-    throw e;
-  }
-
   const session = await getSession();
   if (!session) return { error: "Unauthorized" };
 
@@ -32,21 +18,6 @@ export const updateKanbanPosition = async (data: {
     resourceSectionId,
     destinationSectionId,
   } = data;
-
-  // Soft scope: each affected task must be writable by current user
-  // (board write OR assignee bypass for status-only changes).
-  const allTaskIds = [
-    ...resourceList.map((t) => t.id),
-    ...destinationList.map((t) => t.id),
-  ];
-  for (const id of allTaskIds) {
-    try {
-      await assertCanWriteTask(authzUser, id);
-    } catch (e) {
-      if (e instanceof AuthorizationError) return { error: "Forbidden" };
-      throw e;
-    }
-  }
 
   try {
     const resourceListReverse = [...resourceList].reverse();

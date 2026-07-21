@@ -4,13 +4,12 @@ import {
   CoinsIcon,
   Contact,
   DollarSignIcon,
+  FactoryIcon,
   FilePenLine,
-  FileText,
   HeartHandshakeIcon,
   LandmarkIcon,
-  Megaphone,
-  Target,
   UserIcon,
+  Users2Icon,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -23,9 +22,7 @@ import {
   getTasksCount,
   getUsersTasksCount,
 } from "@/actions/dashboard/get-tasks-count";
-import { getInvoicesCount } from "@/actions/dashboard/get-invoices-count";
-import { getCampaignsCount } from "@/actions/dashboard/get-campaigns-count";
-import { getTargetsCount } from "@/actions/dashboard/get-targets-count";
+import { getEmployees } from "@/actions/get-empoloyees";
 import { getLeadsCount } from "@/actions/dashboard/get-leads-count";
 import { getBoardsCount } from "@/actions/dashboard/get-boards-count";
 import { getStorageSize } from "@/actions/documents/get-storage-size";
@@ -59,9 +56,7 @@ const DashboardPage = async () => {
   const dict = await getTranslations("DashboardPage");
   const leads = await getLeadsCount();
   const tasks = await getTasksCount();
-  const invoices = await getInvoicesCount();
-  const campaigns = await getCampaignsCount();
-  const targets = await getTargetsCount();
+  const employees = await getEmployees();
   const storage = await getStorageSize();
   const projects = await getBoardsCount();
   const contacts = await getContactCount();
@@ -77,7 +72,7 @@ const DashboardPage = async () => {
     <Container
       title={dict("containerTitle")}
       description={
-        "Welcome to SainaFlow cockpit, here you can see your company overview"
+        "Welcome to NextCRM cockpit, here you can see your company overview"
       }
     >
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -117,22 +112,10 @@ const DashboardPage = async () => {
           content={users}
         />
         <DashboardCard
-          href="/invoices"
-          title={dict("invoices")}
-          IconComponent={FileText}
-          content={invoices}
-        />
-        <DashboardCard
-          href="/campaigns"
-          title={dict("campaigns")}
-          IconComponent={Megaphone}
-          content={campaigns}
-        />
-        <DashboardCard
-          href="/crm/targets"
-          title={dict("targets")}
-          IconComponent={Target}
-          content={targets}
+          href="/employees"
+          title="Employees"
+          IconComponent={Users2Icon}
+          content={employees.length}
         />
         <DashboardCard
           href="/crm/accounts"

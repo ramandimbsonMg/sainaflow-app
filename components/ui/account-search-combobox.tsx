@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/command";
 import useDebounce from "@/hooks/useDebounce";
 import { searchAccounts } from "@/actions/crm/accounts/search-accounts";
-import { getAccountById } from "@/actions/crm/accounts/get-account-by-id";
 
 type Account = { id: string; name: string };
 
@@ -33,6 +32,7 @@ interface AccountSearchComboboxProps {
 }
 
 const PAGE_SIZE = 50;
+const PAGE_SIZE_MAX = 100;
 
 export function AccountSearchCombobox({
   value,
@@ -94,8 +94,9 @@ export function AccountSearchCombobox({
       return;
     }
     startTransition(async () => {
-      const account = await getAccountById(value);
-      setSelectedAccount(account);
+      const data = await searchAccounts({ search: "", skip: 0, take: PAGE_SIZE_MAX });
+      const found = data.accounts.find((a: Account) => a.id === value) ?? null;
+      setSelectedAccount(found);
     });
   }, [value, selectedInList]);
 

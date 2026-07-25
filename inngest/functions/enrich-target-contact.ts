@@ -74,7 +74,7 @@ export const enrichTargetContact = inngest.createFunction(
       const script = getAgentScript();
 
       const sandbox = await Sandbox.create(
-        process.env.E2B_ENRICHMENT_TEMPLATE ?? "nextcrm-enrichment",
+        process.env.E2B_ENRICHMENT_TEMPLATE ?? "sainaflow-enrichment",
         {
           timeoutMs: SANDBOX_TIMEOUT_MS,
           apiKey: process.env.E2B_API_KEY,

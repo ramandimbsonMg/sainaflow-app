@@ -1,7 +1,7 @@
 {
   "RootLayout": {
-    "title": "NextCRM",
-    "description": "NextCRM je open source CRM vytvořené na frameworku NextJS."
+    "title": "SainaFlow",
+    "description": "SainaFlow - Inteligentni sprava projektu pro digitalni agentury."
   },
   "ModuleMenu": {
     "dashboard": "Přehled",
@@ -26,7 +26,7 @@
   },
   "DashboardPage": {
     "containerTitle": "Přehled",
-    "containerDescription": "Vítejte v NextCRM, zde můžete vidět všechny důležité informace o vašem podniku.",
+    "containerDescription": "Vitejte v SainaFlow, zde muzete videt vsechny dulezite informace o vasem podniku.",
     "totalRevenue": "Celkový obrat",
     "expectedRevenue": "Očekávaný obrat",
     "activeUsers": "Aktivní uživatelé",

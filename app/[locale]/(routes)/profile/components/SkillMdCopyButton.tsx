@@ -5,8 +5,8 @@ import { Copy, Check } from "lucide-react";
 
 const MCP_CONFIG = `{
   "mcpServers": {
-    "nextcrm": {
-      "url": "https://YOUR_NEXTCRM_URL/api/mcp/sse",
+    "sainaflow": {
+      "url": "https://YOUR_SAINAFLOW_URL/api/mcp/sse",
       "headers": { "Authorization": "Bearer YOUR_API_TOKEN" }
     }
   }

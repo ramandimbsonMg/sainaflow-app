@@ -1,6 +1,3 @@
--- Clean up failed migration record from previous attempt (if exists)
-DELETE FROM "_prisma_migrations" WHERE "migration_name" = '20260404120000_add_currency_support';
-
 -- CreateEnum (idempotent)
 DO $$ BEGIN CREATE TYPE "ExchangeRateSource" AS ENUM ('MANUAL', 'ECB'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 

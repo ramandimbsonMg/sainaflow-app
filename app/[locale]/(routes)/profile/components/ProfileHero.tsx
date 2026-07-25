@@ -11,7 +11,7 @@ export async function ProfileHero({ data }: Props) {
   const t = await getTranslations("ProfilePage");
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 to-violet-600 px-7 py-6 flex items-center gap-4">
+    <div className="bg-[#4F46E5] px-7 py-6 flex items-center gap-4">
       <ProfileHeroAvatar avatar={data.avatar} name={data.name} />
       <div>
         <div className="text-white text-lg font-bold leading-tight">

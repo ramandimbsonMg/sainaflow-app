@@ -1,7 +1,7 @@
 {
   "RootLayout": {
-    "title": "NextCRM",
-    "description": "NextCRM is an open source CRM build on top of NextJS."
+    "title": "SainaFlow",
+    "description": "SainaFlow - Intelligent project management for digital agencies."
   },
   "ModuleMenu": {
     "dashboard": "Dashboard",
@@ -27,7 +27,7 @@
   "DashboardPage": {
     "containerTitle": "Dashboard",
     "totalRevenue": "Total revenue",
-    "containerDescription": "Welcome to NextCRM, here you can see all important information about your business.",
+    "containerDescription": "Welcome to SainaFlow, here you can see all important information about your business.",
     "expectedRevenue": "Expected revenue",
     "activeUsers": "Active users",
     "accounts": "Companies",
@@ -42,10 +42,19 @@
     "storage": "Storage"
   },
   "RegisterComponent": {
-    "cardTitle": "Create new account",
-    "cardDescription": "Create account by login with",
-    "label": "Language",
-    "locale": "{locale, select, de {German} en {English} cz {Czech} uk {Ukrainian} other {Unknown}}"
+    "cardTitle": "Create your account",
+    "cardDescription": "Join SainaFlow in seconds",
+    "nameLabel": "Full name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "sendButton": "Send verification code",
+    "verifyButton": "Create my account",
+    "backButton": "Edit information",
+    "loginLink": "Already have an account?",
+    "loginText": "Sign in",
+    "googleButton": "Continue with Google",
+    "orDivider": "or"
   },
   "CrmModuleMenuComponent": {
     "menuTitle": "Sales"

@@ -7,7 +7,7 @@ import { ac, admin, member, viewer } from "@/lib/auth-permissions";
 import { newUserNotify } from "@/lib/new-user-notify";
 import resendHelper from "@/lib/resend";
 
-const isDemo = process.env.NEXT_PUBLIC_APP_URL === "https://demo.nextcrm.io";
+const isDemo = process.env.NEXT_PUBLIC_APP_URL === "https://demo.sainaflow.app";
 
 export const auth = betterAuth({
   database: prismaAdapter(prismadb, { provider: "postgresql" }),
@@ -69,22 +69,23 @@ export const auth = betterAuth({
   plugins: [
     emailOTP({
       sendVerificationOTP: async ({ email, otp, type }) => {
-        try {
-          const resend = await resendHelper();
-          await resend.emails.send({
-            from: `${process.env.NEXT_PUBLIC_APP_NAME} <${process.env.EMAIL_FROM}>`,
-            to: email,
-            subject: `Your verification code: ${otp}`,
-            text: `Your one-time verification code is: ${otp}\n\nThis code expires in 5 minutes.\n\nIf you did not request this, please ignore this email.`,
-          });
-        } catch (e) {
-          // In dev/test, email sending may fail — OTP is captured by testUtils plugin
-          if (process.env.NODE_ENV !== "production") {
-            console.log(`[Auth] OTP email send failed for ${email}, but captured by testUtils`);
-          } else {
-            throw e;
-          }
+        // In dev mode, just log the OTP to the console — no email needed
+        if (process.env.NODE_ENV !== "production") {
+          console.log(`\n========================================`);
+          console.log(`[SainaFlow Auth] OTP for ${email}: ${otp}`);
+          console.log(`Type: ${type}`);
+          console.log(`========================================\n`);
+          return;
         }
+
+        // Production: send via Resend
+        const resend = await resendHelper();
+        await resend.emails.send({
+          from: `${process.env.NEXT_PUBLIC_APP_NAME} <${process.env.EMAIL_FROM}>`,
+          to: email,
+          subject: `Your verification code: ${otp}`,
+          text: `Your one-time verification code is: ${otp}\n\nThis code expires in 5 minutes.\n\nIf you did not request this, please ignore this email.`,
+        });
       },
     }),
     // testUtils captures OTPs for E2E testing — only enabled in non-production

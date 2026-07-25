@@ -24,7 +24,7 @@ import getCampaignsMenuItem from "./menu-items/Campaigns";
 /**
  * AppSidebar Component - Task Groups 1.2, 2.2-2.7, 3.1, 5.3, 5.4
  *
- * Core sidebar component for NextCRM application layout.
+ * Core sidebar component for SainaFlow application layout.
  * Implements shadcn/ui sidebar pattern with:
  * - Logo and "N" branding symbol with rotation animation
  * - Build version display in footer (when expanded)
@@ -140,7 +140,7 @@ export function AppSidebar({
               isExpanded && "rotate-[360deg]",
             )}
           >
-            N
+            S
           </div>
 
           {/* App Name - visible when expanded, hidden when collapsed */}
@@ -150,7 +150,7 @@ export function AppSidebar({
               !isExpanded ? "w-0 opacity-0" : "w-auto opacity-100",
             )}
           >
-            {process.env.NEXT_PUBLIC_APP_NAME || "NextCRM"}
+            {process.env.NEXT_PUBLIC_APP_NAME || "SainaFlow"}
           </h1>
         </div>
       </SidebarHeader>

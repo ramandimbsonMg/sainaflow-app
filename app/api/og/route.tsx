@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { TbBrandNextjs, TbBrandTypescript } from "react-icons/tb";
 import { BiLogoMongodb, BiLogoTailwindCss } from "react-icons/bi";
-import { SiPrisma, SiReact, SiOpenai } from "react-icons/si";
+import { SiPrisma, SiReact, SiOpenaigym } from "react-icons/si";
 import fs from "fs";
 import path from "path";
 
@@ -22,13 +22,13 @@ export async function GET(request: Request) {
     const hasTitle = searchParams.has("title");
     const title = hasTitle
       ? searchParams.get("title")?.slice(0, 200)
-      : "NextCRM";
+      : "SainaFlow";
 
     const hasDescription = searchParams.has("description");
 
     const description = hasDescription
       ? searchParams.get("description")?.slice(0, 200)
-      : "NextCRM is an open source CRM build on top of NextJS. Technology stack: NextJS with Typescrtipt, MongoDB, TailwindCSS, React, Prisma, shadCN, resend.com, react.email and more. ";
+      : "SainaFlow - Intelligent project management for digital agencies. Projects, time tracking, invoicing and AI collaboration.";
 
     return new ImageResponse(
       (
@@ -57,10 +57,10 @@ export async function GET(request: Request) {
               <SiPrisma size={50} color={"purple"} />
               <SiReact size={50} color={"blue"} />
               <BiLogoTailwindCss size={50} color={"blue"} />
-              <SiOpenai size={50} color={"white"} />
+              <SiOpenaigym size={50} color={"white"} />
             </span>
 
-            <p tw="text-neutral-300 pb-10">https://demo.nextcrm.io</p>
+            <p tw="text-neutral-300 pb-10">https://sainaflow.app</p>
           </div>
         </div>
       ),

@@ -179,7 +179,7 @@ export function NewOpportunityForm({
                   <FormControl>
                     <Input
                       disabled={form.formState.isSubmitting}
-                      placeholder="New NextCRM functionality"
+                      placeholder="SainaFlow feature"
                       {...field}
                     />
                   </FormControl>
@@ -237,7 +237,7 @@ export function NewOpportunityForm({
                   <FormControl>
                     <Textarea
                       disabled={form.formState.isSubmitting}
-                      placeholder="New NextCRM functionality"
+                      placeholder="SainaFlow feature"
                       {...field}
                     />
                   </FormControl>

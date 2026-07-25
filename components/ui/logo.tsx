@@ -27,7 +27,7 @@ export function Logo({ showText = true, size = "md", className }: LogoProps) {
       {/* Logo Icon */}
       <div
         className={cn(
-          "flex items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-violet-600",
+          "flex items-center justify-center rounded-xl bg-[#4F46E5]",
           iconSizes[size]
         )}
       >

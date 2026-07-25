@@ -13,24 +13,6 @@
   --sf-info: #3b82f6;
 }
 
-/* Brand Gradients */
-.sf-gradient-primary {
-  background: linear-gradient(135deg, var(--sf-primary) 0%, var(--sf-secondary) 100%);
-}
-
-.sf-gradient-accent {
-  background: linear-gradient(135deg, var(--sf-secondary) 0%, var(--sf-accent) 100%);
-}
-
-.sf-gradient-mesh {
-  background:
-    radial-gradient(at 40% 20%, hsla(240, 84%, 67%, 0.15) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, hsla(270, 76%, 60%, 0.15) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(330, 81%, 60%, 0.1) 0px, transparent 50%),
-    radial-gradient(at 80% 50%, hsla(240, 84%, 67%, 0.1) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, hsla(270, 76%, 60%, 0.1) 0px, transparent 50%);
-}
-
 /* Card Styles */
 .sf-card {
   @apply rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03];

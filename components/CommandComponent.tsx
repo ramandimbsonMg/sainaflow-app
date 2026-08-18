@@ -56,7 +56,7 @@ export function CommandComponent() {
         setOpen(false);
       }
       if (e.key === "D" && e.metaKey && e.shiftKey) {
-        router.push("/");
+        router.push("/dashboard");
         setOpen(false);
       }
       if (e.key === "P" && e.metaKey && e.shiftKey) {

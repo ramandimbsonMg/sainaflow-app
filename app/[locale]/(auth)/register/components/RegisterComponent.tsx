@@ -37,7 +37,7 @@ export function RegisterComponent() {
     try {
       const { error } = await authClient.emailOtp.sendVerificationOtp({
         email,
-        type: "sign-up",
+        type: "email-verification",
       });
       if (error) {
         toast.error(error.message || "Echec de l'envoi du code.");
@@ -87,7 +87,7 @@ export function RegisterComponent() {
       }
 
       toast.success("Compte cree avec succes !");
-      window.location.href = "/";
+      window.location.href = "/dashboard";
     } catch (error) {
       toast.error("Verification echouee.");
     } finally {
@@ -120,7 +120,7 @@ export function RegisterComponent() {
           try {
             await authClient.signIn.social({
               provider: "google",
-              callbackURL: "/",
+              callbackURL: "/dashboard",
             });
           } catch (error) {
             toast.error("Erreur avec la connexion Google.");
@@ -162,7 +162,7 @@ export function RegisterComponent() {
           <span className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-[11px] uppercase tracking-wider">
-          <span className="bg-white dark:bg-[#0f0e17] px-3 text-muted-foreground font-medium">
+          <span className="bg-white dark:bg-[#171622] px-3 text-muted-foreground font-medium">
             ou
           </span>
         </div>

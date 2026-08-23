@@ -22,7 +22,7 @@ export async function generateMetadata(props: Props) {
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[linear-gradient(135deg,#eef2ff_0%,#f5f3ff_100%)] p-[24px_16px] dark:bg-[linear-gradient(135deg,#0f0e17_0%,#16142a_100%)]">
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#eef2ff] p-[24px_16px] dark:bg-[#0f0e17]">
       {/* Decorative */}
       <div className="pointer-events-none absolute -top-40 -left-40 h-[420px] w-[420px] rounded-full bg-[#4F46E5]/[0.08] blur-3xl" />
       <div className="pointer-events-none absolute -right-40 -bottom-40 h-[420px] w-[420px] rounded-full bg-[#7C3AED]/[0.08] blur-3xl" />

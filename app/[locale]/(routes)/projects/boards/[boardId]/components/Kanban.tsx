@@ -4,6 +4,7 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Check, EyeIcon, Pencil, PlusCircle, PlusIcon } from "lucide-react";
+import { getPriorityColor } from "@/lib/constants/tasks";
 
 import {
   DndContext,
@@ -178,17 +179,7 @@ function TaskItem({ task, onDelete, onDone, onEdit, router }: any) {
         Due date: {moment(task.dueDateAt).format("YYYY-MM-DD")}
       </div>
       <div className="my-2">
-        <p
-          className={
-            task.priority === "normal"
-              ? `text-yellow-500`
-              : task.priority === "high"
-              ? `text-red-500`
-              : task.priority === "low"
-              ? `text-green-500`
-              : `text-slate-600`
-          }
-        >
+        <p className={getPriorityColor(task.priority)}>
           Priorita: {task.priority}
         </p>
       </div>

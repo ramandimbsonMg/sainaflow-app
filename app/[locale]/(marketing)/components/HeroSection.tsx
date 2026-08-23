@@ -37,7 +37,7 @@ export function HeroSection({ onStartTour }: { onStartTour: () => void }) {
             Gerez vos projets
             <br />
             avec{" "}
-            <span className="bg-[linear-gradient(135deg,#818CF8,#A78BFA)] bg-clip-text text-transparent">
+            <span className="text-[#818CF8]">
               intelligence
             </span>
           </h1>
@@ -158,7 +158,7 @@ export function HeroSection({ onStartTour }: { onStartTour: () => void }) {
                       key={i}
                       className={`flex-1 rounded-t-[3px] ${
                         i === 7 || i === 9
-                          ? "bg-[linear-gradient(180deg,#818CF8,#4F46E5)]"
+                          ? "bg-[#4F46E5]"
                           : "bg-[#c7d2fe]"
                       }`}
                       style={{ height: `${h}%` }}
@@ -189,20 +189,11 @@ export function HeroSection({ onStartTour }: { onStartTour: () => void }) {
         </div>
       </div>
 
-      {/* Wave divider */}
-      <div className="leading-none">
-        <svg
-          viewBox="0 0 1440 60"
-          xmlns="http://www.w3.org/2000/svg"
-          className="block h-[60px] w-full"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0,60 L0,30 Q180,0 360,20 Q540,40 720,20 Q900,0 1080,20 Q1260,40 1440,20 L1440,60 Z"
-            fill="white"
-          />
-        </svg>
-      </div>
+      {/* Diagonal slant divider */}
+      <div
+        className="h-[50px] w-full bg-white"
+        style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 40%)" }}
+      />
     </section>
   );
 }

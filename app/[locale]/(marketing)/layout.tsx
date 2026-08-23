@@ -72,7 +72,7 @@ const MarketingLayout = ({ children }: { children: React.ReactNode }) => {
             <Button
               asChild
               size="sm"
-              className="rounded-lg bg-[linear-gradient(135deg,#4F46E5,#4338CA)] text-white shadow-[0_4px_12px_rgba(79,70,229,0.3)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_18px_rgba(79,70,229,0.4)]"
+              className="rounded-lg bg-[#4F46E5] text-white shadow-[0_4px_12px_rgba(79,70,229,0.3)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_18px_rgba(79,70,229,0.4)]"
             >
               <Link href="/register">Commencer</Link>
             </Button>

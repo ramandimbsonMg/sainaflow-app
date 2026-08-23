@@ -26,6 +26,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { CheckSquare, Eye, MessagesSquare, Pencil } from "lucide-react";
+import { getPriorityColor } from "@/lib/constants/tasks";
 import UpdateTaskDialog from "../../dialogs/UpdateTask";
 import { Button } from "@/components/ui/button";
 import { Sections } from "@prisma/client";
@@ -111,17 +112,7 @@ const ProjectDashboardCockpit = ({
                 Due date: {moment(task.dueDateAt).format("YYYY-MM-DD")}
               </div>
               <div>
-                <p
-                  className={
-                    task.priority === "normal"
-                      ? `text-yellow-500`
-                      : task.priority === "high"
-                      ? `text-red-500`
-                      : task.priority === "low"
-                      ? `text-green-500`
-                      : `text-slate-600`
-                  }
-                >
+                <p className={getPriorityColor(task.priority)}>
                   Priorita: {task.priority}
                 </p>
               </div>
@@ -217,17 +208,7 @@ const ProjectDashboardCockpit = ({
                 Due date: {moment(task.dueDateAt).format("YYYY-MM-DD")}
               </div>
               <div>
-                <p
-                  className={
-                    task.priority === "normal"
-                      ? `text-yellow-500`
-                      : task.priority === "high"
-                      ? `text-red-500`
-                      : task.priority === "low"
-                      ? `text-green-500`
-                      : `text-slate-600`
-                  }
-                >
+                <p className={getPriorityColor(task.priority)}>
                   Priorita: {task.priority}
                 </p>
               </div>

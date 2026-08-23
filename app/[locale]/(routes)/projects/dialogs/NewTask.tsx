@@ -278,6 +278,7 @@ const NewTaskDialog = ({ boards }: Props) => {
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="low">{c("low")}</SelectItem>
+                          <SelectItem value="normal">{c("normal")}</SelectItem>
                           <SelectItem value="medium">{c("medium")}</SelectItem>
                           <SelectItem value="high">{c("high")}</SelectItem>
                           <SelectItem value="critical">{c("critical")}</SelectItem>

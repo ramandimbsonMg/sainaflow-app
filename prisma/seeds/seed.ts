@@ -23,6 +23,43 @@ const adapter = new PrismaPg(pool);
 
 const prisma = new PrismaClient({ adapter });
 
+// Deterministic UUIDs for seed data
+const UUIDS = {
+  boardWebsite: "a1000000-0000-4000-8000-000000000001",
+  boardMobile: "a1000000-0000-4000-8000-000000000002",
+  boardMarketing: "a1000000-0000-4000-8000-000000000003",
+  sectionWbBacklog: "b1000000-0000-4000-8000-000000000001",
+  sectionWbProgress: "b1000000-0000-4000-8000-000000000002",
+  sectionWbReview: "b1000000-0000-4000-8000-000000000003",
+  sectionWbDone: "b1000000-0000-4000-8000-000000000004",
+  sectionMbBacklog: "b1000000-0000-4000-8000-000000000005",
+  sectionMbProgress: "b1000000-0000-4000-8000-000000000006",
+  sectionMbDone: "b1000000-0000-4000-8000-000000000007",
+  sectionMkTodo: "b1000000-0000-4000-8000-000000000008",
+  sectionMkProgress: "b1000000-0000-4000-8000-000000000009",
+  task001: "c1000000-0000-4000-8000-000000000001",
+  task002: "c1000000-0000-4000-8000-000000000002",
+  task003: "c1000000-0000-4000-8000-000000000003",
+  task004: "c1000000-0000-4000-8000-000000000004",
+  task005: "c1000000-0000-4000-8000-000000000005",
+  task006: "c1000000-0000-4000-8000-000000000006",
+  task007: "c1000000-0000-4000-8000-000000000007",
+  task008: "c1000000-0000-4000-8000-000000000008",
+  task009: "c1000000-0000-4000-8000-000000000009",
+  task010: "c1000000-0000-4000-8000-000000000010",
+  task011: "c1000000-0000-4000-8000-000000000011",
+  task012: "c1000000-0000-4000-8000-000000000012",
+  task013: "c1000000-0000-4000-8000-000000000013",
+  accountAlpha: "d1000000-0000-4000-8000-000000000001",
+  accountBeta: "d1000000-0000-4000-8000-000000000002",
+  accountGamma: "d1000000-0000-4000-8000-000000000003",
+  contact001: "e1000000-0000-4000-8000-000000000001",
+  contact002: "e1000000-0000-4000-8000-000000000002",
+  contact003: "e1000000-0000-4000-8000-000000000003",
+  opp001: "f1000000-0000-4000-8000-000000000001",
+  opp002: "f1000000-0000-4000-8000-000000000002",
+} as const;
+
 async function upsertByName(
   model: any,
   items: { name: string; [key: string]: any }[]
@@ -170,44 +207,47 @@ async function main() {
   // ========== BOARDS (Projects) ==========
 
   const websiteBoard = await prisma.boards.upsert({
-    where: { id: "board-website-001" },
+    where: { id: UUIDS.boardWebsite },
     update: { title: "Site Web Client Alpha", description: "Refonte du site web corporate avec integrazione CMS" },
     create: {
-      id: "board-website-001",
+      id: UUIDS.boardWebsite,
       title: "Site Web Client Alpha",
       description: "Refonte du site web corporate avec integrazione CMS",
       user: adminUser.id,
       visibility: "PUBLIC",
       icon: "globe",
       position: 1,
+      v: 1,
     },
   });
 
   const mobileBoard = await prisma.boards.upsert({
-    where: { id: "board-mobile-001" },
+    where: { id: UUIDS.boardMobile },
     update: { title: "App Mobile Beta", description: "Application React Native pour e-commerce" },
     create: {
-      id: "board-mobile-001",
+      id: UUIDS.boardMobile,
       title: "App Mobile Beta",
       description: "Application React Native pour e-commerce",
       user: adminUser.id,
       visibility: "PUBLIC",
       icon: "smartphone",
       position: 2,
+      v: 1,
     },
   });
 
   const marketingBoard = await prisma.boards.upsert({
-    where: { id: "board-marketing-001" },
+    where: { id: UUIDS.boardMarketing },
     update: { title: "Campagne Marketing Q1", description: "Strategie digitale et campagnes publicitaires" },
     create: {
-      id: "board-marketing-001",
+      id: UUIDS.boardMarketing,
       title: "Campagne Marketing Q1",
       description: "Strategie digitale et campagnes publicitaires",
       user: adminUser.id,
       visibility: "PUBLIC",
       icon: "megaphone",
       position: 3,
+      v: 1,
     },
   });
 
@@ -217,59 +257,59 @@ async function main() {
 
   // Website Board Sections
   const websiteBacklog = await prisma.sections.upsert({
-    where: { id: "section-wb-backlog" },
+    where: { id: UUIDS.sectionWbBacklog },
     update: { title: "Backlog", position: 1 },
-    create: { id: "section-wb-backlog", board: websiteBoard.id, title: "Backlog", position: 1, v: 1 },
+    create: { id: UUIDS.sectionWbBacklog, board: websiteBoard.id, title: "Backlog", position: 1, v: 1 },
   });
 
   const websiteInProgress = await prisma.sections.upsert({
-    where: { id: "section-wb-progress" },
+    where: { id: UUIDS.sectionWbProgress },
     update: { title: "En cours", position: 2 },
-    create: { id: "section-wb-progress", board: websiteBoard.id, title: "En cours", position: 2, v: 1 },
+    create: { id: UUIDS.sectionWbProgress, board: websiteBoard.id, title: "En cours", position: 2, v: 1 },
   });
 
   const websiteReview = await prisma.sections.upsert({
-    where: { id: "section-wb-review" },
+    where: { id: UUIDS.sectionWbReview },
     update: { title: "En revue", position: 3 },
-    create: { id: "section-wb-review", board: websiteBoard.id, title: "En revue", position: 3, v: 1 },
+    create: { id: UUIDS.sectionWbReview, board: websiteBoard.id, title: "En revue", position: 3, v: 1 },
   });
 
   const websiteDone = await prisma.sections.upsert({
-    where: { id: "section-wb-done" },
+    where: { id: UUIDS.sectionWbDone },
     update: { title: "Termine", position: 4 },
-    create: { id: "section-wb-done", board: websiteBoard.id, title: "Termine", position: 4, v: 1 },
+    create: { id: UUIDS.sectionWbDone, board: websiteBoard.id, title: "Termine", position: 4, v: 1 },
   });
 
   // Mobile Board Sections
   const mobileBacklog = await prisma.sections.upsert({
-    where: { id: "section-mb-backlog" },
+    where: { id: UUIDS.sectionMbBacklog },
     update: { title: "Backlog", position: 1 },
-    create: { id: "section-mb-backlog", board: mobileBoard.id, title: "Backlog", position: 1, v: 1 },
+    create: { id: UUIDS.sectionMbBacklog, board: mobileBoard.id, title: "Backlog", position: 1, v: 1 },
   });
 
   const mobileInProgress = await prisma.sections.upsert({
-    where: { id: "section-mb-progress" },
+    where: { id: UUIDS.sectionMbProgress },
     update: { title: "En cours", position: 2 },
-    create: { id: "section-mb-progress", board: mobileBoard.id, title: "En cours", position: 2, v: 1 },
+    create: { id: UUIDS.sectionMbProgress, board: mobileBoard.id, title: "En cours", position: 2, v: 1 },
   });
 
   const mobileDone = await prisma.sections.upsert({
-    where: { id: "section-mb-done" },
+    where: { id: UUIDS.sectionMbDone },
     update: { title: "Termine", position: 3 },
-    create: { id: "section-mb-done", board: mobileBoard.id, title: "Termine", position: 3, v: 1 },
+    create: { id: UUIDS.sectionMbDone, board: mobileBoard.id, title: "Termine", position: 3, v: 1 },
   });
 
   // Marketing Board Sections
   const marketingTodo = await prisma.sections.upsert({
-    where: { id: "section-mk-todo" },
+    where: { id: UUIDS.sectionMkTodo },
     update: { title: "A faire", position: 1 },
-    create: { id: "section-mk-todo", board: marketingBoard.id, title: "A faire", position: 1, v: 1 },
+    create: { id: UUIDS.sectionMkTodo, board: marketingBoard.id, title: "A faire", position: 1, v: 1 },
   });
 
   const marketingInProgress = await prisma.sections.upsert({
-    where: { id: "section-mk-progress" },
+    where: { id: UUIDS.sectionMkProgress },
     update: { title: "En cours", position: 2 },
-    create: { id: "section-mk-progress", board: marketingBoard.id, title: "En cours", position: 2, v: 1 },
+    create: { id: UUIDS.sectionMkProgress, board: marketingBoard.id, title: "En cours", position: 2, v: 1 },
   });
 
   console.log("Sections seeded");
@@ -279,7 +319,7 @@ async function main() {
   const tasks = [
     // Website Board Tasks
     {
-      id: "task-001",
+      id: UUIDS.task001,
       title: "Maquettes Figma - Page d'accueil",
       content: "Creer les maquettes haute fidibilite pour la page d'accueil du site",
       section: websiteBacklog.id,
@@ -288,7 +328,7 @@ async function main() {
       position: BigInt(1),
     },
     {
-      id: "task-002",
+      id: UUIDS.task002,
       title: "Integrer le composant Hero",
       content: "Integrer la section hero avec animation fade-in et CTA",
       section: websiteInProgress.id,
@@ -297,7 +337,7 @@ async function main() {
       position: BigInt(1),
     },
     {
-      id: "task-003",
+      id: UUIDS.task003,
       title: "Configurer le CMS Strapi",
       content: "Mettre en place Strapi avec les modesles de contenu necessaires",
       section: websiteInProgress.id,
@@ -306,7 +346,7 @@ async function main() {
       position: BigInt(2),
     },
     {
-      id: "task-004",
+      id: UUIDS.task004,
       title: "Section temoignages clients",
       content: "Creer le composant carrousel pour les temoignages",
       section: websiteReview.id,
@@ -315,7 +355,7 @@ async function main() {
       position: BigInt(1),
     },
     {
-      id: "task-005",
+      id: UUIDS.task005,
       title: "Optimisation SEO - Meta tags",
       content: "Ajouter les meta tags OpenGraph et schema.org",
       section: websiteDone.id,
@@ -326,7 +366,7 @@ async function main() {
 
     // Mobile Board Tasks
     {
-      id: "task-006",
+      id: UUIDS.task006,
       title: "Ecran de connexion",
       content: "Implementer l'ecran de connexion avec Google OAuth",
       section: mobileBacklog.id,
@@ -335,7 +375,7 @@ async function main() {
       position: BigInt(1),
     },
     {
-      id: "task-007",
+      id: UUIDS.task007,
       title: "Catalogue produits - List view",
       content: "Creer la vue liste des produits avec filtres et recherche",
       section: mobileInProgress.id,
@@ -344,7 +384,7 @@ async function main() {
       position: BigInt(1),
     },
     {
-      id: "task-008",
+      id: UUIDS.task008,
       title: "Panier d'achat",
       content: "Implementer le panier avec persistance locale",
       section: mobileBacklog.id,
@@ -353,7 +393,7 @@ async function main() {
       position: BigInt(2),
     },
     {
-      id: "task-009",
+      id: UUIDS.task009,
       title: "Paiement mobile money",
       content: "Integrer l'API MVola/Orange Money pour les paiements",
       section: mobileBacklog.id,
@@ -362,7 +402,7 @@ async function main() {
       position: BigInt(3),
     },
     {
-      id: "task-010",
+      id: UUIDS.task010,
       title: "Notifications push",
       content: "Configurer Firebase Cloud Messaging pour les notifications",
       section: mobileDone.id,
@@ -373,7 +413,7 @@ async function main() {
 
     // Marketing Board Tasks
     {
-      id: "task-011",
+      id: UUIDS.task011,
       title: "Strategie contenu LinkedIn",
       content: "Definir le calendrier editorial LinkedIn pour Q1",
       section: marketingTodo.id,
@@ -382,7 +422,7 @@ async function main() {
       position: BigInt(1),
     },
     {
-      id: "task-012",
+      id: UUIDS.task012,
       title: "Campagne Google Ads",
       content: "Lancer la campagne de visibilite sur Google Ads",
       section: marketingInProgress.id,
@@ -391,7 +431,7 @@ async function main() {
       position: BigInt(1),
     },
     {
-      id: "task-013",
+      id: UUIDS.task013,
       title: "Newsletter mensuelle",
       content: "Rediger et envoyer la newsletter de janvier",
       section: marketingTodo.id,
@@ -424,10 +464,10 @@ async function main() {
   // ========== CRM ACCOUNTS (Clients) ==========
 
   const accountAlpha = await prisma.crm_Accounts.upsert({
-    where: { id: "account-alpha-001" },
+    where: { id: UUIDS.accountAlpha },
     update: { name: "Alpha Technologies", email: "contact@alpha-tech.mg", status: "Active" },
     create: {
-      id: "account-alpha-001",
+      id: UUIDS.accountAlpha,
       name: "Alpha Technologies",
       email: "contact@alpha-tech.mg",
       description: "Societe de developpement web et mobile basee a Antananarivo",
@@ -438,14 +478,15 @@ async function main() {
       office_phone: "+261 34 00 000 01",
       billing_city: "Antananarivo",
       billing_country: "Madagascar",
+      v: 1,
     },
   });
 
   const accountBeta = await prisma.crm_Accounts.upsert({
-    where: { id: "account-beta-001" },
+    where: { id: UUIDS.accountBeta },
     update: { name: "Beta Commerce", email: "info@beta-commerce.mg", status: "Active" },
     create: {
-      id: "account-beta-001",
+      id: UUIDS.accountBeta,
       name: "Beta Commerce",
       email: "info@beta-commerce.mg",
       description: "Plateforme e-commerce specialisee dans l'artisanat malgache",
@@ -456,14 +497,15 @@ async function main() {
       office_phone: "+261 34 00 000 02",
       billing_city: "Toamasina",
       billing_country: "Madagascar",
+      v: 1,
     },
   });
 
   const accountGamma = await prisma.crm_Accounts.upsert({
-    where: { id: "account-gamma-001" },
+    where: { id: UUIDS.accountGamma },
     update: { name: "Gamma Consulting", email: "hello@gamma-consulting.mg", status: "Active" },
     create: {
-      id: "account-gamma-001",
+      id: UUIDS.accountGamma,
       name: "Gamma Consulting",
       email: "hello@gamma-consulting.mg",
       description: "Cabinet de conseil en transformation digitale",
@@ -473,6 +515,7 @@ async function main() {
       website: "https://gamma-consulting.mg",
       billing_city: "Antananarivo",
       billing_country: "Madagascar",
+      v: 1,
     },
   });
 
@@ -481,10 +524,10 @@ async function main() {
   // ========== CRM CONTACTS ==========
 
   await prisma.crm_Contacts.upsert({
-    where: { id: "contact-001" },
+    where: { id: UUIDS.contact001 },
     update: { first_name: "Rija", last_name: "Andriamana" },
     create: {
-      id: "contact-001",
+      id: UUIDS.contact001,
       first_name: "Rija",
       last_name: "Andriamana",
       email: "rija@alpha-tech.mg",
@@ -495,10 +538,10 @@ async function main() {
   });
 
   await prisma.crm_Contacts.upsert({
-    where: { id: "contact-002" },
+    where: { id: UUIDS.contact002 },
     update: { first_name: "Hery", last_name: "Razafindrabe" },
     create: {
-      id: "contact-002",
+      id: UUIDS.contact002,
       first_name: "Hery",
       last_name: "Razafindrabe",
       email: "hery@beta-commerce.mg",
@@ -509,10 +552,10 @@ async function main() {
   });
 
   await prisma.crm_Contacts.upsert({
-    where: { id: "contact-003" },
+    where: { id: UUIDS.contact003 },
     update: { first_name: "Nirina", last_name: "Rasoloarison" },
     create: {
-      id: "contact-003",
+      id: UUIDS.contact003,
       first_name: "Nirina",
       last_name: "Rasoloarison",
       email: "nirina@gamma-consulting.mg",
@@ -523,6 +566,9 @@ async function main() {
 
   console.log("CRM Contacts seeded");
 
+  // Currencies and Exchange Rates (must be before opportunities)
+  await seedCurrencies(prisma);
+
   // ========== OPPORTUNITIES ==========
 
   const salesStage = await prisma.crm_Opportunities_Sales_Stages.findFirst({
@@ -530,10 +576,10 @@ async function main() {
   });
 
   await prisma.crm_Opportunities.upsert({
-    where: { id: "opp-001" },
+    where: { id: UUIDS.opp001 },
     update: { name: "Refonte site Alpha Tech" },
     create: {
-      id: "opp-001",
+      id: UUIDS.opp001,
       name: "Refonte site Alpha Tech",
       account: accountAlpha.id,
       assigned_to: adminUser.id,
@@ -547,10 +593,10 @@ async function main() {
   });
 
   await prisma.crm_Opportunities.upsert({
-    where: { id: "opp-002" },
+    where: { id: UUIDS.opp002 },
     update: { name: "App mobile Beta Commerce" },
     create: {
-      id: "opp-002",
+      id: UUIDS.opp002,
       name: "App mobile Beta Commerce",
       account: accountBeta.id,
       assigned_to: adminUser.id,
@@ -565,8 +611,7 @@ async function main() {
 
   console.log("Opportunities seeded");
 
-  // Currencies and Exchange Rates
-  await seedCurrencies(prisma);
+  // Note: seedCurrencies is called above (before opportunities) because they need MGA
 
   console.log("-------- Seed DB completed --------");
   console.log("");

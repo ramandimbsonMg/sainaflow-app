@@ -1,28 +1,9 @@
-import {
-  CheckCircledIcon,
-  CircleIcon,
-  CrossCircledIcon,
-  StopwatchIcon,
-} from "@radix-ui/react-icons";
+export { documentSystemTypes, processingStatuses } from "@/lib/constants/tasks";
 
 export const labels = [
   { value: "bug", label: "Bug" },
   { value: "feature", label: "Feature" },
   { value: "documentation", label: "Documentation" },
-];
-
-export const documentSystemTypes = [
-  { value: "RECEIPT", label: "Receipt" },
-  { value: "CONTRACT", label: "Contract" },
-  { value: "OFFER", label: "Offer" },
-  { value: "OTHER", label: "Other" },
-];
-
-export const processingStatuses = [
-  { value: "PENDING", label: "Pending", icon: CircleIcon },
-  { value: "PROCESSING", label: "Processing", icon: StopwatchIcon },
-  { value: "READY", label: "Ready", icon: CheckCircledIcon },
-  { value: "FAILED", label: "Failed", icon: CrossCircledIcon },
 ];
 
 // Keep legacy exports for any remaining references

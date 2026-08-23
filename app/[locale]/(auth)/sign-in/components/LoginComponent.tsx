@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 
 import { Icons } from "@/components/ui/icons";
@@ -91,7 +91,7 @@ export function LoginComponent() {
   };
 
   const primaryButtonClass =
-    "w-full h-11 rounded-[10px] bg-[linear-gradient(135deg,#4F46E5,#4338CA)] text-white font-semibold text-sm shadow-[0_4px_12px_rgba(79,70,229,0.3)] transition-all duration-200 enabled:hover:-translate-y-px enabled:hover:shadow-[0_6px_18px_rgba(79,70,229,0.4)]";
+    "w-full h-11 rounded-[10px] bg-[#4F46E5] text-white font-semibold text-sm shadow-[0_4px_12px_rgba(79,70,229,0.3)] transition-all duration-200 enabled:hover:-translate-y-px enabled:hover:shadow-[0_6px_18px_rgba(79,70,229,0.4)]";
 
   return (
     <div className="w-full">

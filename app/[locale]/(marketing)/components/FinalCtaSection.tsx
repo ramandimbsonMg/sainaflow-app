@@ -4,7 +4,7 @@ import Link from "next/link";
 export function FinalCtaSection() {
   return (
     <section className="bg-[#fafaff] px-6 py-20">
-      <div className="relative mx-auto max-w-[1280px] overflow-hidden rounded-[24px] bg-[linear-gradient(135deg,#1e1b4b_0%,#312e81_55%,#4F46E5_130%)] px-8 py-16 text-center lg:px-16">
+      <div className="relative mx-auto max-w-[1280px] overflow-hidden rounded-[24px] bg-[#312e81] px-8 py-16 text-center lg:px-16">
         {/* Decorative */}
         <div
           className="absolute inset-0 opacity-[0.05]"

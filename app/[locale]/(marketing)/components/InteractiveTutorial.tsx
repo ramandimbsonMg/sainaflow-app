@@ -45,13 +45,13 @@ export function InteractiveTutorial({
         </button>
 
         {/* Top accent bar */}
-        <div className="h-1.5 w-full rounded-t-[20px] bg-[linear-gradient(135deg,#4F46E5,#7C3AED)]" />
+        <div className="h-1.5 w-full rounded-t-[20px] bg-[#4F46E5]" />
 
         <div className="p-7">
           {isFirst ? (
             /* Welcome step */
             <div className="text-center">
-              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#4F46E5,#7C3AED)]">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4F46E5]">
                 <Sparkles className="h-6 w-6 text-white" />
               </div>
               <DialogTitle className="mb-2 text-xl font-extrabold tracking-tight text-gray-900">
@@ -69,7 +69,7 @@ export function InteractiveTutorial({
           ) : isLast ? (
             /* Final step */
             <div className="text-center">
-              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#10B981,#059669)]">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#10B981]">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -93,7 +93,7 @@ export function InteractiveTutorial({
               </p>
               <Link
                 href="/register"
-                className="inline-flex w-full cursor-pointer items-center justify-center rounded-[10px] bg-[linear-gradient(135deg,#4F46E5,#4338CA)] px-[26px] py-[13px] text-sm font-semibold text-white shadow-[0_4px_12px_rgba(79,70,229,0.3)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_18px_rgba(79,70,229,0.4)]"
+                className="inline-flex w-full cursor-pointer items-center justify-center rounded-[10px] bg-[#4F46E5] px-[26px] py-[13px] text-sm font-semibold text-white shadow-[0_4px_12px_rgba(79,70,229,0.3)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_18px_rgba(79,70,229,0.4)]"
               >
                 Commencer gratuitement
               </Link>
@@ -106,7 +106,7 @@ export function InteractiveTutorial({
                   <div
                     className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${currentModule.color}`}
                   >
-                    <currentModule.icon className="h-5 w-5 text-white" />
+                    <currentModule.icon className={`h-5 w-5 ${currentModule.textColor}`} />
                   </div>
                   <div>
                     <div className="text-xs font-semibold uppercase tracking-wider text-gray-400">

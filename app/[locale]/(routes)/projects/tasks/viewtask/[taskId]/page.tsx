@@ -27,6 +27,7 @@ import { Calendar, Shield, User } from "lucide-react";
 import { prismadb } from "@/lib/prisma";
 import { getBoards } from "@/actions/projects/get-boards";
 import { getSession } from "@/lib/auth-server";
+import { getPriorityBadgeVariant } from "@/lib/constants/tasks";
 
 type TaskPageProps = {
   params: Promise<{
@@ -107,7 +108,7 @@ const TaskPage = async (props: TaskPageProps) => {
                     <p className="text-sm font-medium leading-none">Priority</p>
                     <Badge
                       variant={
-                        task.priority === "high" ? `destructive` : `outline`
+                        getPriorityBadgeVariant(task.priority) as any
                       }
                     >
                       {task.priority}

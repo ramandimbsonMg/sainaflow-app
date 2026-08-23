@@ -30,7 +30,7 @@ import { z } from "zod";
 import { addCommentToTask } from "@/actions/projects/add-comment-to-task";
 
 const FormSchema = z.object({
-  comment: z.string().min(3).max(160),
+  comment: z.string().min(3).max(2000),
 });
 
 export function TeamConversations({

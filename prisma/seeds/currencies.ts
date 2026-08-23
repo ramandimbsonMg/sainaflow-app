@@ -4,15 +4,20 @@ const currencies = [
   { code: "EUR", name: "Euro", symbol: "€", isEnabled: true, isDefault: true },
   { code: "USD", name: "US Dollar", symbol: "$", isEnabled: true, isDefault: false },
   { code: "CZK", name: "Czech Koruna", symbol: "Kč", isEnabled: true, isDefault: false },
+  { code: "MGA", name: "Malagasy Ariary", symbol: "Ar", isEnabled: true, isDefault: false },
 ];
 
 const rates = [
   { fromCurrency: "EUR", toCurrency: "USD", rate: 1.084, source: ExchangeRateSource.ECB },
   { fromCurrency: "EUR", toCurrency: "CZK", rate: 25.315, source: ExchangeRateSource.ECB },
+  { fromCurrency: "EUR", toCurrency: "MGA", rate: 4900, source: ExchangeRateSource.ECB },
   { fromCurrency: "USD", toCurrency: "EUR", rate: 0.92251, source: ExchangeRateSource.ECB },
   { fromCurrency: "USD", toCurrency: "CZK", rate: 23.35, source: ExchangeRateSource.ECB },
+  { fromCurrency: "USD", toCurrency: "MGA", rate: 4520, source: ExchangeRateSource.ECB },
   { fromCurrency: "CZK", toCurrency: "EUR", rate: 0.0395, source: ExchangeRateSource.ECB },
   { fromCurrency: "CZK", toCurrency: "USD", rate: 0.04283, source: ExchangeRateSource.ECB },
+  { fromCurrency: "MGA", toCurrency: "EUR", rate: 0.000204, source: ExchangeRateSource.ECB },
+  { fromCurrency: "MGA", toCurrency: "USD", rate: 0.000221, source: ExchangeRateSource.ECB },
 ];
 
 export async function seedCurrencies(prisma: PrismaClient) {

@@ -70,7 +70,7 @@ export function PresentationSection() {
                 key={f.title}
                 className="rounded-[16px] border border-[#f0f0f0] bg-[#fafaff] p-5 shadow-[0_1px_3px_rgba(15,13,46,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(79,70,229,0.12)]"
               >
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#4F46E5,#7C3AED)]">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#4F46E5]">
                   <f.icon size={18} className="text-white" />
                 </div>
                 <div className="text-[15px] font-bold text-gray-900">

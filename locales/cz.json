@@ -67,6 +67,7 @@
     "priorityLabel": "Priorita",
     "priorityPlaceholder": "Vyberte prioritu",
     "low": "Nízká",
+    "normal": "Normální",
     "medium": "Střední",
     "high": "Vysoká",
     "critical": "Kritická"

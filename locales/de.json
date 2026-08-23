@@ -64,6 +64,7 @@
     "priorityLabel": "Priorität",
     "priorityPlaceholder": "Priorität auswählen",
     "low": "Niedrig",
+    "normal": "Normal",
     "medium": "Mittel",
     "high": "Hoch",
     "critical": "Kritisch"

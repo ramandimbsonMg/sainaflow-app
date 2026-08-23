@@ -64,6 +64,7 @@
     "priorityLabel": "Пріоритет",
     "priorityPlaceholder": "Виберіть пріоритет",
     "low": "Низький",
+    "normal": "Нормальний",
     "medium": "Середній",
     "high": "Високий",
     "critical": "Критичний"

@@ -4,12 +4,16 @@ import { getTasks } from "@/actions/projects/get-tasks";
 import { TasksDataTable } from "./components/data-table";
 import { columns } from "./components/columns";
 
-import { Button } from "@/components/ui/button";
 import { getTranslations } from "next-intl/server";
+import { getBoards } from "@/actions/projects/get-boards";
+import { getSession } from "@/lib/auth-server";
+import NewTaskDialog from "../dialogs/NewTask";
 
 const TasksPage = async () => {
   const tasks: any = await getTasks();
   const t = await getTranslations("ProjectsPage");
+  const session = await getSession();
+  const boards = session?.user?.id ? await getBoards(session.user.id) : [];
 
   return (
     <Container
@@ -17,7 +21,7 @@ const TasksPage = async () => {
       description={t("tasks.description")}
     >
       <div className="py-5">
-        <Button>{t("tasks.newTask")}</Button>
+        <NewTaskDialog boards={boards} />
       </div>
       <div>
         <TasksDataTable data={tasks} columns={columns} />

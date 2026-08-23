@@ -29,7 +29,7 @@ export function ModulesSection() {
               <div
                 className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${m.color}`}
               >
-                <m.icon size={20} className="text-white" />
+                <m.icon size={20} className={m.textColor} />
               </div>
               <div className="mb-1.5 text-[15px] font-bold text-gray-900">
                 {m.title}

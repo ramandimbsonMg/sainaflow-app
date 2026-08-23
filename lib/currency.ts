@@ -1,4 +1,5 @@
 import { Decimal } from "@prisma/client/runtime/client";
+import { unstable_cache } from "next/cache";
 import { prismadb } from "@/lib/prisma";
 
 // Re-export pure functions so existing server-side imports still work
@@ -27,16 +28,24 @@ export async function getSnapshotRate(
   return rate ? rate.rate : null;
 }
 
-export async function getDefaultCurrency(): Promise<string> {
-  const setting = await prismadb.crm_SystemSettings.findUnique({
-    where: { key: "default_currency" },
-  });
-  return setting?.value || "EUR";
-}
+export const getDefaultCurrency = unstable_cache(
+  async (): Promise<string> => {
+    const setting = await prismadb.crm_SystemSettings.findUnique({
+      where: { key: "default_currency" },
+    });
+    return setting?.value || "EUR";
+  },
+  ["default-currency"],
+  { revalidate: 300, tags: ["currency-settings"] }
+);
 
-export async function getEnabledCurrencies() {
-  return prismadb.currency.findMany({
-    where: { isEnabled: true },
-    orderBy: { code: "asc" },
-  });
-}
+export const getEnabledCurrencies = unstable_cache(
+  async () => {
+    return prismadb.currency.findMany({
+      where: { isEnabled: true },
+      orderBy: { code: "asc" },
+    });
+  },
+  ["enabled-currencies"],
+  { revalidate: 300, tags: ["currency-settings"] }
+);
